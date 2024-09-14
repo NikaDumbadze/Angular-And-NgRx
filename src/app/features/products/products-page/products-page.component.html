@@ -1,0 +1,15 @@
+@if(errorMessage) {
+<div class="card error-card">
+  Error: {{ errorMessage }}
+</div>
+}
+{{errorMessage}}
+@if(!loading) {
+<div class="container">
+  <app-product-list [total]="total" [products]="products" [showProductCode]="showProductCode"
+    (toggleProductCode)="toggleShowProductCode()" />
+</div>
+}
+@else {
+Loading...
+}

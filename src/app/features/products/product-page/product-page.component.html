@@ -1,0 +1,8 @@
+@if((product$ | async) !== undefined) {
+<div>
+  <app-product-edit (add)="addProduct($event)" (update)="updateProduct($event)" (delete)="deleteProduct($event)"
+    [product]="product$ | async" />
+</div>
+} @else {
+Loading...
+}
