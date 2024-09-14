@@ -6,7 +6,7 @@
 {{errorMessage}}
 @if(!loading) {
 <div class="container">
-  <app-product-list [total]="total" [products]="products" [showProductCode]="showProductCode"
+  <app-product-list [total]="total" [products]="products" [showProductCode]="showProductCode$ | async"
     (toggleProductCode)="toggleShowProductCode()" />
 </div>
 }

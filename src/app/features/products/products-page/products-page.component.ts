@@ -5,6 +5,7 @@ import { ProductsService } from 'src/app/services/products.service';
 import { Product } from 'src/app/models/product.model';
 import { sumProducts } from 'src/app/utils/sum-products';
 import { ProductListComponent } from '../product-list/product-list.component';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-products-page',
@@ -17,10 +18,16 @@ export class ProductsPageComponent {
   products: Product[] = [];
   total = 0;
   loading = true;
-  showProductCode = false;
+  showProductCode$: any;
   errorMessage = '';
 
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly store: Store
+  ) {
+    this.store.subscribe(store => console.log('store', store));
+    this.showProductCode$ = this.store.select((state: any) => state.products.showProductCode);
+  }
 
   ngOnInit() {
     this.getProducts();
@@ -38,6 +45,6 @@ export class ProductsPageComponent {
   }
 
   toggleShowProductCode() {
-    this.showProductCode = !this.showProductCode;
+    this.store.dispatch({ type: '[Products Page] Toggle Show Product Code' });
   }
 }
