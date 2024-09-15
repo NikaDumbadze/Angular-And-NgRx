@@ -4,9 +4,9 @@
 </div>
 }
 {{errorMessage}}
-@if(!loading) {
+@if(!(loading$ | async)) {
 <div class="container">
-  <app-product-list [total]="total" [products]="products" [showProductCode]="showProductCode$ | async"
+  <app-product-list [total]="total" [products]="products$ | async" [showProductCode]="showProductCode$ | async"
     (toggleProductCode)="toggleShowProductCode()" />
 </div>
 }
