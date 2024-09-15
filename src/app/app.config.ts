@@ -8,6 +8,8 @@ import { InMemoryDataService } from './in-memory-data.service';
 
 import { StoreModule } from '@ngrx/store';
 import { productsReducer } from './features/products/state/products.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment.prod';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +18,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false }),
       StoreModule.forRoot({}),
-      StoreModule.forFeature('products', productsReducer)
+      StoreModule.forFeature('products', productsReducer),
+      StoreDevtoolsModule.instrument({
+        name: 'NgRx Demo App',
+        maxAge: 25,
+        logOnly: environment.production
+      })
     ),
     provideZoneChangeDetection({ eventCoalescing: true }),
     // provideExperimentalZonelessChangeDetection(),
