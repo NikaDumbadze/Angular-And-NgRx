@@ -25,8 +25,8 @@ export const appConfig: ApplicationConfig = {
         logOnly: environment.production
       })
     ),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    // provideExperimentalZonelessChangeDetection(),
+    // provideZoneChangeDetection({ eventCoalescing: true }),
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(APP_ROUTES),
   ],
 };
