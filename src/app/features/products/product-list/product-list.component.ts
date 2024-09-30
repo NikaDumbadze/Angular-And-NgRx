@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from 'src/app/models/product.model';
 import { RouterModule } from '@angular/router';
@@ -15,5 +15,5 @@ export class ProductListComponent {
   @Input() total: number | null = 0;
   @Input() showProductCode: boolean | null = false;
 
-  @Output() toggleProductCode = new EventEmitter<void>();
+  toggleProductCode = output<void>();
 }

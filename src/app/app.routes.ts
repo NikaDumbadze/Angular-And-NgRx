@@ -8,6 +8,9 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'products',
-    loadChildren: () => import('./features/products/products.routes').then(r => r.PRODUCT_ROUTES)
+    children: [
+      { path: '', loadComponent: () => import('./features/products/products-page/products-page.component').then(m => m.ProductsPageComponent) },
+      { path: ':id', loadComponent: () => import('./features/products/product-page/product-page.component').then(m => m.ProductPageComponent) }
+    ]
   }
 ];

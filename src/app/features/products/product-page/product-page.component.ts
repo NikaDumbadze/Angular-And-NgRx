@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductEditComponent } from '../product-edit/product-edit.component';
 import { Observable } from 'rxjs';
@@ -16,32 +16,30 @@ import { ProductsService } from 'src/app/services/products.service';
 export class ProductPageComponent {
   product$: Observable<Product> | undefined;
 
-  constructor(
-    private readonly productsService: ProductsService,
-    private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
-  ) {}
+  private readonly _productsService =  inject(ProductsService);
+  private readonly _router =  inject(Router);
+  private readonly _activatedRoute =  inject(ActivatedRoute);
 
   ngOnInit() {
-    const productId = parseInt(this.activatedRoute.snapshot.params['id']);
+    const productId = parseInt(this._activatedRoute.snapshot.params['id']);
     this.getProduct(productId);
   }
 
   getProduct(id: number) {
-    this.product$ = this.productsService.getById(id);
+    this.product$ = this._productsService.getById(id);
   }
 
   addProduct(product: Product) {
-    this.productsService.add(product).subscribe(this.goToProductsPage);
+    this._productsService.add(product).subscribe(this.goToProductsPage);
   }
 
   updateProduct(product: Product) {
-    this.productsService.update(product).subscribe(this.goToProductsPage);
+    this._productsService.update(product).subscribe(this.goToProductsPage);
   }
 
   deleteProduct(id: number) {
-    this.productsService.delete(id).subscribe(this.goToProductsPage);
+    this._productsService.delete(id).subscribe(this.goToProductsPage);
   }
 
-  goToProductsPage = () => this.router.navigate(['/products']);
+  goToProductsPage = () => this._router.navigate(['/products']);
 }

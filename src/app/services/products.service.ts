@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../models/product.model';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,35 +9,35 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class ProductsService {
   private productsAPIUrl = 'api/products';
 
-  constructor(private readonly http: HttpClient) { }
+  private readonly _http =  inject(HttpClient)
 
   getAll() {
-    return this.http
+    return this._http
       .get<Product[]>(this.productsAPIUrl)
       .pipe(catchError(this.handleError));
   }
 
   getById(id: number) {
-    return this.http
+    return this._http
       .get<Product>(`${this.productsAPIUrl}/${id}`)
       .pipe(catchError(this.handleError));
   }
 
   add({ name, price }: Product) {
-    return this.http
+    return this._http
       .post<Product>(this.productsAPIUrl, { name, price })
       .pipe(catchError(this.handleError));
   }
 
   update(product: Product) {
-    return this.http
+    return this._http
       .put<Product>(this.productsAPIUrl, product)
       .pipe(catchError(this.handleError));
   }
 
   delete(id: number) {
     const url = `${this.productsAPIUrl}/${id}`;
-    return this.http.delete(url).pipe(catchError(this.handleError));
+    return this._http.delete(url).pipe(catchError(this.handleError));
   }
 
   private handleError({ status }: HttpErrorResponse) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from 'src/app/services/products.service';
@@ -23,34 +23,32 @@ export class ProductsPageComponent {
   showProductCode$: any;
   errorMessage = '';
 
-  constructor(
-    private readonly productsService: ProductsService,
-    private readonly store: Store
-  ) {
-    this.store.subscribe(store => console.log('store', store));
-    this.showProductCode$ = this.store.select(selectProductsShowProductCode);
-    this.loading$ = this.store.select(selectProductsLoading);
-    this.products$ = this.store.select(selectProducts);
-    this.products$ = this.store.select(selectProducts);
-    this.total$ = this.store.select(selectProductsTotal);
-  }
+  private readonly _productsService = inject(ProductsService)
+  private readonly _store = inject(Store)
 
   ngOnInit() {
+    this._store.subscribe(store => console.log('store', store));
+    this.showProductCode$ = this._store.select(selectProductsShowProductCode);
+    this.loading$ = this._store.select(selectProductsLoading);
+    this.products$ = this._store.select(selectProducts);
+    this.products$ = this._store.select(selectProducts);
+    this.total$ = this._store.select(selectProductsTotal);
+
     this.getProducts();
   }
 
   getProducts() {
-    this.store.dispatch(ProductsPageActions.loadProducts());
+    this._store.dispatch(ProductsPageActions.loadProducts());
 
-    this.productsService.getAll().subscribe({
+    this._productsService.getAll().subscribe({
       next: (products) => {
-        this.store.dispatch(ProductsAPIActions.productsLoadedSuccess({ products }));
+        this._store.dispatch(ProductsAPIActions.productsLoadedSuccess({ products }));
       },
       error: (error) => (this.errorMessage = error),
     });
   }
 
   toggleShowProductCode() {
-    this.store.dispatch(ProductsPageActions.toggleShowProductCode());
+    this._store.dispatch(ProductsPageActions.toggleShowProductCode());
   }
 }

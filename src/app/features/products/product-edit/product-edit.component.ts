@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from 'src/app/models/product.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,9 +14,9 @@ import { RouterModule } from '@angular/router';
 export class ProductEditComponent {
   oldProduct: Product | null | undefined = null;
 
-  @Output() add = new EventEmitter<Product>();
-  @Output() update = new EventEmitter<Product>();
-  @Output() delete = new EventEmitter<number>();
+  add = output<Product>();
+  update = output<Product>();
+  delete = output<number>();
 
   @Input() set product(product: Product | null | undefined) {
     this.productForm.reset({ name: '', price: 0 });
