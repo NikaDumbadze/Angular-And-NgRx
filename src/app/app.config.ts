@@ -7,9 +7,12 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
 import { StoreModule } from '@ngrx/store';
-import { productsReducer } from './features/products/state/products.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects'
+
+import { productsReducer } from './features/products/state/products.reducer';
 import { environment } from 'src/environments/environment.prod';
+import { ProductEffects } from './features/products/state/products.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +26,9 @@ export const appConfig: ApplicationConfig = {
         name: 'NgRx Demo App',
         maxAge: 25,
         logOnly: environment.production
-      })
+      }),
+      EffectsModule.forRoot([]),
+      EffectsModule.forFeature([ProductEffects])
     ),
     // provideZoneChangeDetection({ eventCoalescing: true }),
     provideExperimentalZonelessChangeDetection(),

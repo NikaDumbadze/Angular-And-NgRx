@@ -8,7 +8,7 @@ export const ProductsPageActions = createActionGroup({
     'Load Products': emptyProps(),
     'Add Product': props<{ product: Product }>(),
     'Update Product': props<{ product: Product }>(),
-    'Delete Product': props<{ product: Product }>(),
+    'Delete Product': props<{ id: number }>(),
   },
 });
 
@@ -18,13 +18,13 @@ export const ProductsAPIActions = createActionGroup({
     'Products Loaded Success': props<{ products: Product[] }>(),
     'Products Loaded Fail': props<{ message: string }>(),
 
-    'Product Added Success': props<{ products: Product[] }>(),
+    'Product Added Success': props<{ product: Product }>(),
     'Product Added Fail': props<{ message: string }>(),
 
-    'Product Updated Success': props<{ products: Product[] }>(),
+    'Product Updated Success': props<{ product: Product }>(),
     'Product Updated Fail': props<{ message: string }>(),
-    
-    'Product Delete Success': props<{ products: Product[] }>(),
-    'Product Delete Fail': props<{ message: string }>(),
+
+    'Product Deleted Success': props<{ id: number }>(),
+    'Product Deleted Fail': props<{ message: string }>(),
   }
 })

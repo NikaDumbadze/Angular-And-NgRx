@@ -1,9 +1,9 @@
-@if(errorMessage) {
+@let errorMessage = errorMessage$ | async;
+@if(!!errorMessage) {
 <div class="card error-card">
   Error: {{ errorMessage }}
 </div>
 }
-{{errorMessage}}
 @if(!(loading$ | async)) {
 <div class="container">
   <app-product-list [total]="total$ | async" [products]="products$ | async" [showProductCode]="showProductCode$ | async"
