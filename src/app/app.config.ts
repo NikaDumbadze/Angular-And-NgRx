@@ -9,6 +9,7 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects'
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store'
 
 import { productsReducer } from './features/products/state/products.reducer';
 import { environment } from 'src/environments/environment.prod';
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(
       HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false }),
-      StoreModule.forRoot({}),
+      StoreModule.forRoot({ router: routerReducer }),
       StoreModule.forFeature('products', productsReducer),
       StoreDevtoolsModule.instrument({
         name: 'NgRx Demo App',
@@ -28,7 +29,8 @@ export const appConfig: ApplicationConfig = {
         logOnly: environment.production
       }),
       EffectsModule.forRoot([]),
-      EffectsModule.forFeature([ProductEffects])
+      EffectsModule.forFeature([ProductEffects]),
+      StoreRouterConnectingModule.forRoot()
     ),
     // provideZoneChangeDetection({ eventCoalescing: true }),
     provideExperimentalZonelessChangeDetection(),

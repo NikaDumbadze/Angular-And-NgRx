@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductEditComponent } from '../product-edit/product-edit.component';
-import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ProductsService } from 'src/app/services/products.service';
+import { Store } from '@ngrx/store';
+import { selectProductById, selectProductsLoading } from '../state/products.selectors';
+import { ProductsPageActions } from '../state/products.actions';
 
 @Component({
   selector: 'app-product-page',
@@ -14,32 +14,20 @@ import { ProductsService } from 'src/app/services/products.service';
   styleUrl: './product-page.component.scss',
 })
 export class ProductPageComponent {
-  product$: Observable<Product> | undefined;
+  private readonly _store = inject(Store);
 
-  private readonly _productsService =  inject(ProductsService);
-  private readonly _router =  inject(Router);
-  private readonly _activatedRoute =  inject(ActivatedRoute);
-
-  ngOnInit() {
-    const productId = parseInt(this._activatedRoute.snapshot.params['id']);
-    this.getProduct(productId);
-  }
-
-  getProduct(id: number) {
-    this.product$ = this._productsService.getById(id);
-  }
+  product$ = this._store.select(selectProductById);
+  loading$ = this._store.select(selectProductsLoading);
 
   addProduct(product: Product) {
-    this._productsService.add(product).subscribe(this.goToProductsPage);
+    this._store.dispatch(ProductsPageActions.addProduct({ product }));
   }
 
   updateProduct(product: Product) {
-    this._productsService.update(product).subscribe(this.goToProductsPage);
+    this._store.dispatch(ProductsPageActions.updateProduct({ product }));
   }
 
   deleteProduct(id: number) {
-    this._productsService.delete(id).subscribe(this.goToProductsPage);
+    this._store.dispatch(ProductsPageActions.deleteProduct({ id }));
   }
-
-  goToProductsPage = () => this._router.navigate(['/products']);
 }
