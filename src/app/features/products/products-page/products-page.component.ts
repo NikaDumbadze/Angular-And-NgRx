@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { ProductListComponent } from '../product-list/product-list.component';
 import { Store } from '@ngrx/store';
 import { ProductsPageActions } from '../state/products.actions';
-import { selectProducts, selectProductsErrorMessage, selectProductsLoading, selectProductsShowProductCode, selectProductsTotal } from '../state/products.selectors';
+import { selectProductsErrorMessage, selectProductsLoading, selectProductsShowProductCode, selectProductsTotal } from '../state/products.selectors';
+import { ProductsStore } from 'src/app/stores/products.store';
 
 @Component({
   selector: 'app-products-page',
@@ -12,18 +13,20 @@ import { selectProducts, selectProductsErrorMessage, selectProductsLoading, sele
   imports: [CommonModule, RouterModule, ProductListComponent],
   templateUrl: './products-page.component.html',
   styleUrl: './products-page.component.scss',
+  providers: [ProductsStore]
 })
 export class ProductsPageComponent {
   private readonly _store = inject(Store)
+  private readonly _productsStore = inject(ProductsStore)
 
-  products$ = this._store.select(selectProducts);
+  products$ = this._productsStore.products$;
   total$ = this._store.select(selectProductsTotal);
   loading$ = this._store.select(selectProductsLoading);
   showProductCode$ = this._store.select(selectProductsShowProductCode);
   errorMessage$ = this._store.select(selectProductsErrorMessage);
 
   ngOnInit() {
-    this._store.subscribe(store => console.log('store', store));
+    this._productsStore.getProducts();
   }
 
   toggleShowProductCode() {
